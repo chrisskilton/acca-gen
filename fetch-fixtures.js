@@ -3,7 +3,7 @@ var fs = require('fs');
 var cheerio = require('cheerio');
 
 console.log('Fetching games...');
-request.get('http://www.bbc.co.uk/sport/football/fixtures', function(error, response, html) {
+request.get('http://www.bbc.co.uk/sport/football/fixtures/partial/competition-118996114', function(error, response, html) {
     var $ = cheerio.load(html);
 
     var prem = $('.table-stats').eq(0);

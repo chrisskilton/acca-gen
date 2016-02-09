@@ -1,11 +1,11 @@
 var generate = require('./generate-picks');
 var winners = [
-    { home: 'Aston Villa', away: 'Norwich', result: 'H' },
-    { home: 'Liverpool', away: 'Sunderland', result: 'D' },
-    { home: 'Newcastle', away: 'West Brom', result: 'H' },
-    { home: 'Stoke', away: 'Everton', result: 'A' },
-    { home: 'Swansea', away: 'Crystal Palace', result: 'D' },
-    { home: 'Tottenham', away: 'Watford', result: 'H' }
+  { home: 'Sunderland', away: 'Man Utd', result: 'H' },
+  { home: 'Bournemouth', away: 'Stoke', result: 'A' },
+  { home: 'Crystal Palace', away: 'Watford', result: 'H' },
+  { home: 'Everton', away: 'West Brom', result: 'D' },
+  { home: 'Swansea', away: 'Southampton', result: 'H' },
+  { home: 'Chelsea', away: 'Newcastle', result: 'H' }
   ];
 
 function findWinner(currentCount, callback) {
