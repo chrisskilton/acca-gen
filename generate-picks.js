@@ -24,8 +24,9 @@ function generateProbabilities(game) {
     var homePos = (homeData.position * 5) / 100;
     var awayPos = (awayData.position * 5) / 100;
 
-    probs[0] += homePos;
-    probs[2] += awayPos;
+    //add home prob to away team and away team to home prob to make the bigger league position less favourable
+    probs[0] += awayPos;
+    probs[2] += homePos;
 
     homeData.results.forEach(function(result) {
         var indexMap = {
