@@ -8,50 +8,51 @@ var winners = [
   { home: 'Stoke', away: 'Everton', result: 'A' }
   ];
 
+var pickCache = [];
+
+function genPick(callback) {
+  var pick = generate();
+  var pickString = JSON.stringify(pick);
+
+  if (pickCache.indexOf(pickString) !== -1) {
+    return process.nextTick(genPick.bind(null, callback));
+  }
+
+  pickCache.push(pickString);
+
+  callback(pick);
+}
+
 function findWinner(currentCount) {
-    var picks = generate();
-    var winner = true;
-    var count;
+    genPick(function(picks) {
+      var winner = true;
+      var count;
 
-    count = currentCount === undefined ? 0 : currentCount;
+      count = currentCount === undefined ? 0 : currentCount;
 
-    count++;
+      count++;
 
-    winners.forEach(function(match) {
-        var pickMatch = picks.filter(function(pick) {
-            return pick.home === match.home;
-        })[0];
+      winners.forEach(function(match) {
+          var pickMatch = picks.filter(function(pick) {
+              return pick.home === match.home;
+          })[0];
 
-        if (!pickMatch) {
-            console.log('missing result');
-            return;
-        }
+          if (!pickMatch) {
+              console.log('missing result');
+              return;
+          }
 
-        if (pickMatch.result !== match.result) {
-            winner = false;
-        }
+          if (pickMatch.result !== match.result) {
+              winner = false;
+          }
+      });
+
+      if (!winner) {
+          return process.nextTick(findWinner.bind(null,count));
+      }
+
+      console.log(count);
     });
-
-    if (!winner) {
-        return findWinner(count);
-    }
-
-    return count;
 }
 
-var results = [];
-var sampleSize = 100;
-
-for (var i = 0; i < sampleSize; i++) {
-    results.push(findWinner());
-}
-
-var average = results.reduce(function(memo, num) {
-    memo += num;
-
-    return memo;
-}, 0) / sampleSize;
-
-console.log(average, 'average');
-console.log(Math.max.apply(null, results), 'max');
-console.log(Math.min.apply(null, results), 'min');
+findWinner();
