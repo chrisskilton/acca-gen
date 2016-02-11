@@ -13,6 +13,7 @@ request.get('http://www.bbc.co.uk/sport/football/tables/partial/118996114', func
         var team = $(this).find('.team-name').text().trim();
         var position = parseInt($(this).find('.position-number').text().trim(), 10);
         var lastTenGames = $(this).find('.last-10-games ol li span');
+        var gd = parseInt($(this).find('.goal-difference'), 10);
 
         var results = [];
 
@@ -22,7 +23,8 @@ request.get('http://www.bbc.co.uk/sport/football/tables/partial/118996114', func
 
         teamData[team] = {
             position: position,
-            results: results
+            results: results,
+            gd: gd
         };
     });
 
