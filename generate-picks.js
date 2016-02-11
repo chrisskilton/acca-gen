@@ -21,6 +21,13 @@ var games = JSON.parse(fs.readFileSync('./fixtures.json'));
 var tableData = JSON.parse(fs.readFileSync('./teamData.json'));
 var injuries = JSON.parse(fs.readFileSync('./injuries.json'));
 
+var COEFFICIENTS = {
+    gd: 0.1,
+    injury: 0.1,
+    leaguePos: 0.1,
+    result: 0.1
+};
+
 function generateProbabilities(game) {
     var probs = [1.0, 1.0, 1.0];
 
@@ -30,8 +37,8 @@ function generateProbabilities(game) {
     homeData.injuries = injuries[game.home] || 0;
     awayData.injuries = injuries[game.away] || 0;
 
-    var homePos = (homeData.position * 5) / 100;
-    var awayPos = (awayData.position * 5) / 100;
+    var homePos = homeData.position * COEFFICIENTS.leaguePos;
+    var awayPos = awayData.position * COEFFICIENTS.leaguePos;
 
     //add home prob to away team and away team to home prob to make the bigger league position less favourable
     probs[0] += awayPos;
@@ -45,7 +52,7 @@ function generateProbabilities(game) {
             l: 2
         };
 
-        probs[indexMap[result]] += 0.1;
+        probs[indexMap[result]] += COEFFICIENTS.result;
     });
 
     //for each of the last 10 away team results, add coefficient to away team for a win, home team for a loss, draw for a draw
@@ -56,21 +63,21 @@ function generateProbabilities(game) {
             l: 0
         };
 
-        probs[indexMap[result]] += 0.1;
+        probs[indexMap[result]] += COEFFICIENTS.result;
     });
 
     var gd;
 
     if (homeData.gd > awayData.gd) {
-        probs[0] += (homeData.gd - awayData.gd) * 0.05;
+        probs[0] += (homeData.gd - awayData.gd) * COEFFICIENTS.gd;
     } else if (awayData.gd > homeData.gd) {
-        probs[2] += (homeData.gd - awayData.gd) * 0.05;
+        probs[2] += (homeData.gd - awayData.gd) * COEFFICIENTS.gd;
     }
 
     if (homeData.injuries > awayData.injuries) {
-        probs[0] += (homeData.injuries - awayData.injuries) * 0.05;
+        probs[0] += (homeData.injuries - awayData.injuries) * COEFFICIENTS.injury;
     } else if (awayData.injuries > homeData.injuries) {
-        probs[2] += (homeData.injuries - awayData.injuries) * 0.05;
+        probs[2] += (homeData.injuries - awayData.injuries) * COEFFICIENTS.injury;
     }
 
     probs = probs.map(function(prob) {
