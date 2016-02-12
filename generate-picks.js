@@ -120,6 +120,7 @@ function generatePicks() {
         var choice = pickResult(probabilities);
 
         game.result = choice;
+        game.probabilities = probabilities;
 
         return game;
     });

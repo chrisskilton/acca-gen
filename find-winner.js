@@ -1,13 +1,12 @@
 var generate = require('./generate-picks');
-var winners = [
-  { home: 'Tottenham', away: 'Watford', result: 'H' },
-  { home: 'Southampton', away: 'West Ham', result: 'H' },
-  { home: 'Aston Villa', away: 'Norwich', result: 'H' },
-  { home: 'Liverpool', away: 'Sunderland', result: 'D' },
-  { home: 'Newcastle', away: 'West Brom', result: 'H' },
-  { home: 'Stoke', away: 'Everton', result: 'A' }
-  ];
+var fs = require('fs');
 
+if (!fs.existsSync('./results.json')) {
+    console.log('run node fetch-results.js');
+    process.exit(1);
+}
+
+var results = JSON.parse(fs.readFileSync('./results.json'));
 var pickCache = [];
 
 function genPick(callback) {
@@ -32,7 +31,7 @@ function findWinner(currentCount) {
 
       count++;
 
-      winners.forEach(function(match) {
+      results.forEach(function(match) {
           var pickMatch = picks.filter(function(pick) {
               return pick.home === match.home;
           })[0];
