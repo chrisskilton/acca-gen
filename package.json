@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "fetch": "node fetch-fixtures.js && node fetch-table.js && node fetch-injuries.js"
+    "fetch": "node fetch-fixtures.js && node fetch-table.js && node fetch-injuries.js",
+    "pick": "node generate-picks.js"
   },
   "author": "",
   "license": "ISC",
