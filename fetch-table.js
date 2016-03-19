@@ -2,7 +2,7 @@ var request = require('request');
 var fs = require('fs');
 var cheerio = require('cheerio');
 
-console.log('Fetching games...');
+console.log('Fetching league table...');
 request.get('http://www.bbc.co.uk/sport/football/tables/partial/118996114', function(error, response, html) {
     var $ = cheerio.load(html);
 
